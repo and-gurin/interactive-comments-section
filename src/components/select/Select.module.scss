@@ -1,0 +1,22 @@
+.select {
+    border: solid 1px gray;
+    border-radius: 10px;
+    outline: none;
+    padding: 10px 30px;
+    cursor: pointer;
+    width: 253px;
+    height: 45px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+.select:focus {
+    border: solid 1px gray;
+    outline: none;
+}
+
+.textLabel {
+    margin-bottom: 22px;
+    display: block;
+}

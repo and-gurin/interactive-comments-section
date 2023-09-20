@@ -1,0 +1,47 @@
+@import 'src/styles/mixins';
+
+input {
+  text-align: center;
+  border: 1px solid #6C757D;
+}
+
+input[type='number'] {
+  -webkit-appearance: textfield !important;
+  -moz-appearance: textfield !important;
+  appearance: textfield !important;
+}
+
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}
+
+.wrapper {
+  border: 1px solid #C5C6EF;
+  width: 123px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  border-radius: 10px;
+
+}
+
+.plusMinus {
+  height: 100%;
+  width: 60%;
+  background: transparent;
+  border: none;
+  @include font(1.6rem, 150%, 500, black);
+  cursor: pointer;
+}
+
+.num {
+  height: 100%;
+  width: 100%;
+  border: none;
+  @include font(1.6rem, 150%, 500, black);
+}
+
+.plusMinus:hover {
+  color: #C5C6EF;
+}

@@ -1,0 +1,22 @@
+@import 'styles/placeholders';
+@import 'styles/mixins';
+
+html {
+    box-sizing: border-box;
+    font-size: 10px;
+    @extend %font-primary;
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: inherit;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    text-decoration: none;
+}
+
+.body {
+    font-size: 1.6rem;
+}

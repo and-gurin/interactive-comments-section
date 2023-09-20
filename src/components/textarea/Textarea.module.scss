@@ -1,0 +1,29 @@
+@import '@/styles/placeholders';
+@import '@/styles/mixins';
+
+.input {
+  border: solid 1px #E9EBF0;
+  border-radius: 10px;
+  outline: none;
+  padding: 12px 24px;
+  cursor: pointer;
+  width: 453px;
+  height: 75px;
+  @include font(1.6rem, 150%, 400, #67727E);
+  text-align: left;
+}
+
+.input::placeholder {
+  color: #67727E;
+}
+
+.input:focus {
+  border: solid 1px #5357B6;
+  outline: none;
+}
+
+.textLabel {
+  margin-bottom: 22px;
+  @include font(1.6rem, 150%, 500, #334253);
+  display: block;
+}
