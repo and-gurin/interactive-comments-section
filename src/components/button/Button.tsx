@@ -4,9 +4,9 @@ const Button = ({title, onClick, borderRadius, width, height, bg, fontSize, icon
                         {
                             title:string,
                             onClick?: ()=>void,
-                            borderRadius: string,
+                            borderRadius?: string,
                             width: string,
-                            height: string,
+                            height?: string,
                             bg?: string,
                             fontSize?: string
                             icon?: string
@@ -28,7 +28,7 @@ const Button = ({title, onClick, borderRadius, width, height, bg, fontSize, icon
                             fontWeight: fontWeight,
                             border: border
                         }}>
-                <p>{title}</p>
+                <span>{title}</span>
                 {icon && <img src={icon} width='18px' height='9px' alt='button-icon'/>}
             </button>
 

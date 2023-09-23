@@ -1,30 +1,33 @@
 import style from './Textarea.module.scss';
+import {ChangeEvent} from "react";
+
 const Textarea = ({disabled, textLabel, error, value, onChangeHandler, placeholderText, width, id, height}:
-                   {
-                       disabled?: boolean
-                       textLabel?: string
-                       error?: string
-                       value?: string
-                       onChangeHandler?: () => void
-                       placeholderText?: string
-                       width?: string
-                       id?: string
-                       height: string
-                   }
+                      {
+                          disabled?: boolean
+                          textLabel?: string
+                          error?: string
+                          value?: string
+                          onChangeHandler?: (e: ChangeEvent<HTMLTextAreaElement>) => void
+                          placeholderText?: string
+                          width?: string
+                          id?: string
+                          height: string
+                      }
 ) => {
 
     return (
-        <div>
-                {textLabel && <label htmlFor={id} className={style.textLabel}>{textLabel}</label>}
+        <>
+            {textLabel && <label htmlFor={id} className={style.textLabel}>{textLabel}</label>}
             <textarea value={value}
-                   id={id}
-                   onChange={onChangeHandler}
-                   className={error ? `${style.input} ${style.error}` : style.input}
-                   disabled={disabled}
-                   placeholder={placeholderText}
-                   style={{width: width, height: height}}
+                      id={id}
+                      onChange={onChangeHandler}
+                      className={error ? `${style.input} ${style.error}` : style.input}
+                      disabled={disabled}
+                      autoFocus
+                      placeholder={placeholderText}
+                      style={{width: width, height: height}}
             />
-        </div>
+        </>
     );
 };
 
