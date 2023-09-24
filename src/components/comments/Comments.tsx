@@ -4,7 +4,7 @@ import style from './Comments.module.scss'
 import Textarea from '@/components/textarea/Textarea.tsx';
 import Button from '@/components/button/Button.tsx';
 import {useAppDispatch, useAppSelector} from '@/hooks/useAppDispatch.ts';
-import {addComment, changeLikes, CommentType} from '@/features/comments/commentsSlice.ts';
+import {addComment, changeLikes, CommentType, editComment} from '@/features/comments/commentsSlice.ts';
 import ReplyForm from "@/components/reply-form/ReplyForm.tsx";
 import InputPlusMinus from "@/components/input-plus-minus/InputPlusMinus.tsx";
 
@@ -28,13 +28,16 @@ const Comments = () => {
     const [commentText, setCommentText] = useState<string>('');
     const [replyText, setReplyText] = useState('');
     const [replyMode, setReplyMode] = useState<boolean>(false);
+    const [editMode, setEditMode] = useState<boolean>(false);
     const [replyId, setReplyId] = useState<string>('');
+    const [editableText, setEditableText] = useState<string>('');
+    const [editCommentId, setEditCommentId] = useState<string>('');
     const [replyUserName, setReplyUserName] = useState<string | undefined>('');
     const currentUser: UserType = users?.find(user => user.id === userId);
 
     const comments = useAppSelector(state => state.comment);
     const dispatch = useAppDispatch();
-    const onClickSendHandler = () => {
+    const onClickSendCommentHandler = () => {
         dispatch(addComment({user: currentUser, text: commentText}));
         setCommentText('')
     }
@@ -51,14 +54,21 @@ const Comments = () => {
             setReplyUserName(comment.userName)
         }
 
+        const onClickEditCommentButton = () => {
+            setEditMode(!editMode)
+            setEditCommentId(comment.id)
+            setEditableText(comment.text)
+        }
+
         const onChangeReplyText = (e: ChangeEvent<HTMLTextAreaElement>) => {
             setReplyText(e.currentTarget.value);
             e.preventDefault()
         }
 
-        // useEffect(() => {
-        //     dispatch(changeLikes({likes: countLikeValue, id: replyId}))
-        // }, [countLikeValue])
+        const onClickUpdateCommentHandler = () => {
+            dispatch(editComment({id: comment.id, text: editableText}));
+            setEditMode(false)
+        }
 
         return (
             <div key={comment.id}>
@@ -74,17 +84,56 @@ const Comments = () => {
                     <div className={style.answer__header}>
                         <div className={style.answer__UserInfo}>
                             <img src={comment.userAvatar} alt='avatar'/>
-                            <span>{comment.userName}</span>
-                            <div className={style.answer__button}>
-                                <Button title={'Reply'}
+                            <span className={style.answer__name}>{comment.userName}</span>
+                            <span className={style.answer__label}>{comment.label}</span>
+                            {comment?.label ? <div className={style.answer__button_edit}>
+                                <Button title='Delete'
                                         width='66px'
-                                        bg={'transparent'}
-                                        border={'none'}
-                                        color={'#5357B6'}
+                                        bg='transparent'
+                                        border='none'
+                                        color='#ED6368'
+                                        icon='trashbox.svg'
                                         onClick={onClickReplyTextHandler}/>
-                            </div>
+                                <Button title='Edit'
+                                        width='66px'
+                                        bg='transparent'
+                                        border='none'
+                                        color='#5357B6'
+                                        icon='pensil.svg'
+                                        onClick={onClickEditCommentButton}/>
+                            </div> : <div className={style.answer__button}>
+                                <Button title='Reply'
+                                        width='66px'
+                                        bg='transparent'
+                                        border='none'
+                                        color='#5357B6'
+                                        icon='reply.svg'
+                                        onClick={onClickReplyTextHandler}/>
+                            </div>}
+
                         </div>
-                        <p className={style.answer__text}>{comment.text}</p>
+                        {editMode && editCommentId === comment.id ?
+                            <div>
+                                <Textarea width='100%'
+                                          height='96px'
+                                          value={editableText}
+                                          onChangeHandler={(e) => setEditableText(e.currentTarget.value)}
+                                          placeholderText='Add a comment…'/>
+                                <div className={style.answer__button_update}>
+                                    <Button title='UPDATE'
+                                            width='104px'
+                                            height='48px'
+                                            bg='#5357B6'
+                                            border='none'
+                                            color='#FFFFF'
+                                            fontSize='16px'
+                                            marginLeft='auto'
+                                            borderRadius='8px'
+                                            onClick={onClickUpdateCommentHandler}/>
+                                </div>
+                            </div>
+                            : <p className={style.answer__text}>{comment.text}</p>}
+
                     </div>
                 </div>
                 {replyMode && replyId === comment.id ? <ReplyForm userSrc={currentUser?.src}
@@ -125,7 +174,7 @@ const Comments = () => {
                         <div className={style.comments__button}>
                             <Button title='SEND'
                                     border='none'
-                                    onClick={onClickSendHandler}
+                                    onClick={onClickSendCommentHandler}
                                     borderRadius='8px'
                                     width='100%'
                                     fontSize='16px'

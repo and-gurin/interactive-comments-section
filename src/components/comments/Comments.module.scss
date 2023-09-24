@@ -27,7 +27,7 @@
 }
 
 .answer {
-  height: 167px;
+  min-height: 167px;
   gap: 24px;
   margin-bottom: 20px;
   border-radius: 8px;
@@ -48,6 +48,20 @@
     flex-grow: 2;
   }
 
+  &__name {
+    @include font(1.6rem, 2.4rem, 500, #334253);
+  }
+
+  &__label {
+    display: inline-block;
+    width: 36px;
+    height: 19px;
+    background-color: #5357B6;
+    text-align: center;
+    border-radius: 2px;
+    @include font(1.3rem, 1.6rem, 500, #FFFFFF);
+  }
+
   &__UserInfo {
     display: flex;
     gap: 16px;
@@ -57,6 +71,17 @@
 
   &__button {
     margin-left: auto;
+  }
+
+  &__button_edit {
+    display: flex;
+    margin-left: auto;
+    gap: 24px;
+  }
+
+  &__button_update {
+    display: flex;
+    margin-top: 7px;
   }
 
   &__text {

@@ -7,6 +7,7 @@ export type CommentType = {
     userId: string | undefined
     userName: string | undefined
     userAvatar: string | undefined
+    label: string | undefined
     date: Date
     text: string
     likes: number
@@ -19,10 +20,10 @@ const changeComment = (state: CommentType[],
                        id: string,
                        handler: (state: CommentType[], index: number) => void) => {
 
-  state.forEach((comment, index) => {
-      comment.id === id ? handler(state, index)
-          : comment.answers.length ? changeComment(comment.answers, id, handler ) : null
-  })
+    state.forEach((comment, index) => {
+        comment.id === id ? handler(state, index)
+            : comment.answers.length ? changeComment(comment.answers, id, handler) : null
+    })
 }
 
 export const cartSlice = createSlice({
@@ -36,6 +37,7 @@ export const cartSlice = createSlice({
                     userId: action.payload.user?.id,
                     userName: action.payload.user?.title,
                     userAvatar: action.payload.user?.src,
+                    label: action.payload.user?.label,
                     date: new Date(),
                     text: action.payload.text,
                     likes: 0,
@@ -48,7 +50,7 @@ export const cartSlice = createSlice({
                     : changeComment(state, action.payload.id, addAnswerHandler);
             },
             changeLikes: (state,
-                         action: PayloadAction<{ likes: number, id: string }>) => {
+                          action: PayloadAction<{ likes: number, id: string }>) => {
                 const changeLikesHandler = (state: CommentType[], index: number) => {
                     state[index].likes = action.payload.likes
                     console.log(current(state[index]))
@@ -56,11 +58,19 @@ export const cartSlice = createSlice({
                 if (action.payload.likes > 0) {
                     changeComment(state, action.payload.id, changeLikesHandler);
                 }
+            },
+            editComment: (state,
+                          action: PayloadAction<{ text: string, id: string }>) => {
+                const editCommentHandler = (state: CommentType[], index: number) => {
+                    state[index].text = action.payload.text
+                    console.log(current(state[index]))
+                }
+                changeComment(state, action.payload.id, editCommentHandler);
 
             },
         }
     }
 )
 
-export const {addComment, changeLikes} = cartSlice.actions;
+export const {addComment, changeLikes, editComment} = cartSlice.actions;
 export const commentsReducer = cartSlice.reducer

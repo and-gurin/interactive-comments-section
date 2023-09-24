@@ -1,6 +1,6 @@
 import s from './Button.module.scss'
 
-const Button = ({title, onClick, borderRadius, width, height, bg, fontSize, icon, color, fontWeight, border}:
+const Button = ({title, onClick, borderRadius, width, height, bg, fontSize, icon, color, fontWeight, border, marginLeft}:
                         {
                             title:string,
                             onClick?: ()=>void,
@@ -13,6 +13,7 @@ const Button = ({title, onClick, borderRadius, width, height, bg, fontSize, icon
                             color?: string
                             fontWeight?: string
                             border?: string
+                            marginLeft?: string
                         }) => {
     return (
             <button className={icon ? s.button + ' ' + s.button_icon : s.button}
@@ -26,10 +27,11 @@ const Button = ({title, onClick, borderRadius, width, height, bg, fontSize, icon
                             fontSize: fontSize,
                             color: color,
                             fontWeight: fontWeight,
-                            border: border
+                            border: border,
+                            marginLeft: marginLeft
                         }}>
+                {icon && <img src={icon} width='14px' height='12px' alt='button-icon'/>}
                 <span>{title}</span>
-                {icon && <img src={icon} width='18px' height='9px' alt='button-icon'/>}
             </button>
 
     );
