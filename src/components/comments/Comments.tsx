@@ -53,8 +53,19 @@ const Comments = () => {
         dispatch(deleteComment({id: deletedCommentId}));
         setIsModalWindowOpen(false)
     }
+    const passedTime = (date: number) => {
+        const currentDate = Date.now();
+        const offsetTime = currentDate - date
+        const minutes: number | undefined = Math.floor(offsetTime / 1000 / 60);
+        const hours: number | undefined = Math.floor(offsetTime / 1000 / 60 / 60);
+        const days: number | undefined = Math.floor(offsetTime / 1000 / 60 / 60 / 24);
 
-    const CommentList =({comment}: {comment: CommentType}) => {
+        return  minutes <= 60 && minutes >= 1 ? `${minutes} minute(s)`
+            : hours <= 24 && hours >= 1 ? `${hours} hour(s)`
+                : days <= 7 && days >= 1 ? `${days} day(s)` : 'less than minute';
+    }
+
+    const CommentList = ({comment}: { comment: CommentType }) => {
         const onClickReplyTextHandler = () => {
             setReplyMode(!replyMode)
             setReplyId(comment.id)
@@ -85,11 +96,12 @@ const Comments = () => {
         useEffect(() => {
             isModalWindowOpen && (document.body.style.overflow = 'hidden')
             !isModalWindowOpen && (document.body.style.overflow = 'unset')
-        },[isModalWindowOpen])
+        }, [isModalWindowOpen])
 
         return (
             <div key={comment.id}>
-                <div className={replyMode && replyId === comment.id ? style.answer + ' ' + style.answer_replyMode : style.answer}>
+                <div
+                    className={replyMode && replyId === comment.id ? style.answer + ' ' + style.answer_replyMode : style.answer}>
                     <div className={style.answer__likes}>
                         <InputPlusMinus
                             value={comment.likes}
@@ -102,7 +114,8 @@ const Comments = () => {
                         <div className={style.answer__UserInfo}>
                             <img src={comment.userAvatar} alt='avatar'/>
                             <span className={style.answer__name}>{comment.userName}</span>
-                            <span className={style.answer__label}>{comment.label}</span>
+                            {comment.label && <span className={style.answer__label}>{comment.label}</span>}
+                            <span className={style.answer__date}>{`${passedTime(comment.date)} ago`}</span>
                             {comment?.label ? <div className={style.answer__button_edit}>
                                 <Button title='Delete'
                                         width='66px'
@@ -127,7 +140,6 @@ const Comments = () => {
                                         icon='reply.svg'
                                         onClick={onClickReplyTextHandler}/>
                             </div>}
-
                         </div>
                         {editMode && editCommentId === comment.id ?
                             <div>
@@ -154,10 +166,10 @@ const Comments = () => {
                     </div>
                 </div>
                 {replyMode && replyId === comment.id ? <ReplyForm userSrc={currentUser?.src}
-                                                                replyText={replyText}
-                                                                setReplyText={onChangeReplyText}
-                                                                replyUserName={replyUserName}
-                                                                onClickReplyButtonHandler={onClickReplyButtonHandler}/>  : null}
+                                                                  replyText={replyText}
+                                                                  setReplyText={onChangeReplyText}
+                                                                  replyUserName={replyUserName}
+                                                                  onClickReplyButtonHandler={onClickReplyButtonHandler}/> : null}
 
                 {comment.answers.map(comment => {
                     return (
@@ -165,7 +177,7 @@ const Comments = () => {
                             <CommentList comment={comment}/>
                         </div>
                     )
-                } )}
+                })}
             </div>
         )
     }
@@ -173,7 +185,7 @@ const Comments = () => {
     return (
         <>
             {isModalWindowOpen && <ModalWindow setModalWindowMode={setIsModalWindowOpen}
-                                             onClickDeleteComment={onClickDeleteCommentHandler}
+                                               onClickDeleteComment={onClickDeleteCommentHandler}
             />}
             <Select onChangeHandler={(e) => setUserId(e.currentTarget.value)}
                     options={users}/>

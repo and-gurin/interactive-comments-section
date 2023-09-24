@@ -8,7 +8,7 @@ export type CommentType = {
     userName: string | undefined
     userAvatar: string | undefined
     label: string | undefined
-    date: Date
+    date: number
     text: string
     likes: number
     answers: CommentType[]
@@ -38,7 +38,7 @@ export const cartSlice = createSlice({
                     userName: action.payload.user?.title,
                     userAvatar: action.payload.user?.src,
                     label: action.payload.user?.label,
-                    date: new Date(),
+                    date: Date.now(),
                     text: action.payload.text,
                     likes: 0,
                     answers: []
@@ -58,6 +58,8 @@ export const cartSlice = createSlice({
                 if (action.payload.likes > 0) {
                     changeComment(state, action.payload.id, changeLikesHandler);
                 }
+
+                console.log(current(state))
             },
             editComment: (state,
                           action: PayloadAction<{ text: string, id: string }>) => {
