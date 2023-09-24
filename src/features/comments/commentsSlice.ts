@@ -63,14 +63,23 @@ export const cartSlice = createSlice({
                           action: PayloadAction<{ text: string, id: string }>) => {
                 const editCommentHandler = (state: CommentType[], index: number) => {
                     state[index].text = action.payload.text
-                    console.log(current(state[index]))
                 }
                 changeComment(state, action.payload.id, editCommentHandler);
-
+            },
+            deleteComment: (state,
+                          action: PayloadAction<{ id: string }>) => {
+                const editCommentHandler = (state: CommentType[], index: number) => {
+                    state.splice(index, 1)
+                }
+                changeComment(state, action.payload.id, editCommentHandler);
             },
         }
     }
 )
 
-export const {addComment, changeLikes, editComment} = cartSlice.actions;
+export const {
+    addComment,
+    changeLikes,
+    deleteComment,
+    editComment} = cartSlice.actions;
 export const commentsReducer = cartSlice.reducer

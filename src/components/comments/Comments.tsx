@@ -1,12 +1,13 @@
 import Select from '@/components/select/Select.tsx';
-import {ChangeEvent, useState} from 'react';
+import {ChangeEvent, useEffect, useState} from 'react';
 import style from './Comments.module.scss'
 import Textarea from '@/components/textarea/Textarea.tsx';
 import Button from '@/components/button/Button.tsx';
 import {useAppDispatch, useAppSelector} from '@/hooks/useAppDispatch.ts';
-import {addComment, changeLikes, CommentType, editComment} from '@/features/comments/commentsSlice.ts';
+import {addComment, changeLikes, CommentType, deleteComment, editComment} from '@/features/comments/commentsSlice.ts';
 import ReplyForm from "@/components/reply-form/ReplyForm.tsx";
 import InputPlusMinus from "@/components/input-plus-minus/InputPlusMinus.tsx";
+import ModalWindow from "@/components/modal-window/ModalWindow.tsx";
 
 export type UserType = {
     id: string
@@ -29,8 +30,10 @@ const Comments = () => {
     const [replyText, setReplyText] = useState('');
     const [replyMode, setReplyMode] = useState<boolean>(false);
     const [editMode, setEditMode] = useState<boolean>(false);
+    const [isModalWindowOpen, setIsModalWindowOpen] = useState<boolean>(false);
     const [replyId, setReplyId] = useState<string>('');
     const [editableText, setEditableText] = useState<string>('');
+    const [deletedCommentId, setDeletedCommentId] = useState<string>('');
     const [editCommentId, setEditCommentId] = useState<string>('');
     const [replyUserName, setReplyUserName] = useState<string | undefined>('');
     const currentUser: UserType = users?.find(user => user.id === userId);
@@ -45,6 +48,10 @@ const Comments = () => {
         dispatch(addComment({user: currentUser, text: replyText, id: replyId}));
         setReplyMode(false)
         setReplyText('')
+    }
+    const onClickDeleteCommentHandler = () => {
+        dispatch(deleteComment({id: deletedCommentId}));
+        setIsModalWindowOpen(false)
     }
 
     const CommentList =({comment}: {comment: CommentType}) => {
@@ -70,6 +77,16 @@ const Comments = () => {
             setEditMode(false)
         }
 
+        const onClickOpenModalWindowHandler = () => {
+            setDeletedCommentId(comment.id)
+            setIsModalWindowOpen(true)
+        }
+
+        useEffect(() => {
+            isModalWindowOpen && (document.body.style.overflow = 'hidden')
+            !isModalWindowOpen && (document.body.style.overflow = 'unset')
+        },[isModalWindowOpen])
+
         return (
             <div key={comment.id}>
                 <div className={replyMode && replyId === comment.id ? style.answer + ' ' + style.answer_replyMode : style.answer}>
@@ -93,7 +110,7 @@ const Comments = () => {
                                         border='none'
                                         color='#ED6368'
                                         icon='trashbox.svg'
-                                        onClick={onClickReplyTextHandler}/>
+                                        onClick={onClickOpenModalWindowHandler}/>
                                 <Button title='Edit'
                                         width='66px'
                                         bg='transparent'
@@ -155,6 +172,9 @@ const Comments = () => {
 
     return (
         <>
+            {isModalWindowOpen && <ModalWindow setModalWindowMode={setIsModalWindowOpen}
+                                             onClickDeleteComment={onClickDeleteCommentHandler}
+            />}
             <Select onChangeHandler={(e) => setUserId(e.currentTarget.value)}
                     options={users}/>
             <section className={style.comments}>
