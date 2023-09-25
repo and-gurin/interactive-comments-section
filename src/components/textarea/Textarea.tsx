@@ -1,7 +1,7 @@
 import style from './Textarea.module.scss';
 import {ChangeEvent} from "react";
 
-const Textarea = ({disabled, textLabel, error, value, onChangeHandler, placeholderText, width, id, height}:
+const Textarea = ({disabled, textLabel, value, onChangeHandler, placeholderText, width, id, height, className}:
                       {
                           disabled?: boolean
                           textLabel?: string
@@ -12,6 +12,7 @@ const Textarea = ({disabled, textLabel, error, value, onChangeHandler, placehold
                           width?: string
                           id?: string
                           height: string
+                          className?: string
                       }
 ) => {
 
@@ -21,7 +22,7 @@ const Textarea = ({disabled, textLabel, error, value, onChangeHandler, placehold
             <textarea value={value}
                       id={id}
                       onChange={onChangeHandler}
-                      className={error ? `${style.input} ${style.error}` : style.input}
+                      className={style.input + ' ' + className}
                       disabled={disabled}
                       autoFocus
                       placeholder={placeholderText}

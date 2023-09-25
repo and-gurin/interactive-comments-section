@@ -16,7 +16,7 @@ const Button = ({title, onClick, borderRadius, width, height, bg, fontSize, icon
                             marginLeft?: string
                         }) => {
     return (
-            <button className={icon ? s.button + ' ' + s.button_icon : s.button}
+            <button className={icon ? s.button + ' ' + s.button_icon: s.button}
                     onClick={onClick}
                     style={
                         {

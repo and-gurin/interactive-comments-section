@@ -110,60 +110,57 @@ const Comments = () => {
                             onChange={(e) => dispatch(changeLikes({likes: +e.currentTarget.value, id: comment.id}))}
                         />
                     </div>
-                    <div className={style.answer__header}>
-                        <div className={style.answer__UserInfo}>
-                            <img src={comment.userAvatar} alt='avatar'/>
-                            <span className={style.answer__name}>{comment.userName}</span>
-                            {comment.label && <span className={style.answer__label}>{comment.label}</span>}
-                            <span className={style.answer__date}>{`${passedTime(comment.date)} ago`}</span>
-                            {comment?.label ? <div className={style.answer__button_edit}>
-                                <Button title='Delete'
-                                        width='66px'
-                                        bg='transparent'
-                                        border='none'
-                                        color='#ED6368'
-                                        icon='trashbox.svg'
-                                        onClick={onClickOpenModalWindowHandler}/>
-                                <Button title='Edit'
-                                        width='66px'
-                                        bg='transparent'
-                                        border='none'
-                                        color='#5357B6'
-                                        icon='pensil.svg'
-                                        onClick={onClickEditCommentButton}/>
-                            </div> : <div className={style.answer__button}>
-                                <Button title='Reply'
-                                        width='66px'
-                                        bg='transparent'
-                                        border='none'
-                                        color='#5357B6'
-                                        icon='reply.svg'
-                                        onClick={onClickReplyTextHandler}/>
-                            </div>}
-                        </div>
-                        {editMode && editCommentId === comment.id ?
-                            <div>
-                                <Textarea width='100%'
-                                          height='96px'
-                                          value={editableText}
-                                          onChangeHandler={(e) => setEditableText(e.currentTarget.value)}
-                                          placeholderText='Add a comment…'/>
-                                <div className={style.answer__button_update}>
-                                    <Button title='UPDATE'
-                                            width='104px'
-                                            height='48px'
-                                            bg='#5357B6'
-                                            border='none'
-                                            color='#FFFFF'
-                                            fontSize='16px'
-                                            marginLeft='auto'
-                                            borderRadius='8px'
-                                            onClick={onClickUpdateCommentHandler}/>
-                                </div>
-                            </div>
-                            : <p className={style.answer__text}>{comment.text}</p>}
-
+                    <div className={style.answer__UserInfo}>
+                        <img src={comment.userAvatar} width='32px' height='32px' alt='avatar'/>
+                        <span className={style.answer__name}>{comment.userName}</span>
+                        {comment.label && <span className={style.answer__label}>{comment.label}</span>}
+                        <span className={style.answer__date}>{`${passedTime(comment.date)} ago`}</span>
                     </div>
+                    {comment?.label ? <div className={style.answer__button_edit}>
+                        <Button title='Delete'
+                                width='66px'
+                                bg='transparent'
+                                border='none'
+                                color='#ED6368'
+                                icon='trashbox.svg'
+                                onClick={onClickOpenModalWindowHandler}/>
+                        <Button title='Edit'
+                                width='66px'
+                                bg='transparent'
+                                border='none'
+                                color='#5357B6'
+                                icon='pensil.svg'
+                                onClick={onClickEditCommentButton}/>
+                    </div> : <div className={style.answer__button}>
+                        <Button title='Reply'
+                                width='66px'
+                                bg='transparent'
+                                border='none'
+                                color='#5357B6'
+                                icon='reply.svg'
+                                onClick={onClickReplyTextHandler}/>
+                    </div>}
+                    {editMode && editCommentId === comment.id ?
+                        <div>
+                            <Textarea width='100%'
+                                      height='96px'
+                                      value={editableText}
+                                      onChangeHandler={(e) => setEditableText(e.currentTarget.value)}
+                                      placeholderText='Add a comment…'/>
+                            <div className={style.answer__button_update}>
+                                <Button title='UPDATE'
+                                        width='104px'
+                                        height='48px'
+                                        bg='#5357B6'
+                                        border='none'
+                                        color='#FFFFF'
+                                        fontSize='16px'
+                                        marginLeft='auto'
+                                        borderRadius='8px'
+                                        onClick={onClickUpdateCommentHandler}/>
+                            </div>
+                        </div>
+                        : <div className={style.answer__text}><p>{comment.text}</p></div> }
                 </div>
                 {replyMode && replyId === comment.id ? <ReplyForm userSrc={currentUser?.src}
                                                                   replyText={replyText}
@@ -173,7 +170,7 @@ const Comments = () => {
 
                 {comment.answers.map(comment => {
                     return (
-                        <div className={style.answer_answer}>
+                        <div className={style.reply}>
                             <CommentList comment={comment}/>
                         </div>
                     )
@@ -193,16 +190,18 @@ const Comments = () => {
                 <div className={style.comments__wrapper}>
                     {comments.map(comment => <CommentList comment={comment}/>)}
                     <div className={style.comments__base}>
-                        <img className={style.comments__img}
+                        <img className={style.comments__image}
                              src={currentUser?.src}
                              width='40px'
                              height='40px'
                              alt='user-avatar'/>
-                        <Textarea width='506px'
-                                  height='96px'
-                                  value={commentText}
-                                  onChangeHandler={(e) => setCommentText(e.currentTarget.value)}
-                                  placeholderText='Add a comment…'/>
+                        <div className={style.comments__texarea}>
+                            <Textarea width='100%'
+                                      height='96px'
+                                      value={commentText}
+                                      onChangeHandler={(e) => setCommentText(e.currentTarget.value)}
+                                      placeholderText='Add a comment…'/>
+                        </div>
                         <div className={style.comments__button}>
                             <Button title='SEND'
                                     border='none'
