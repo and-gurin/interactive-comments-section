@@ -30,7 +30,7 @@ const Button = ({title, onClick, borderRadius, width, height, bg, fontSize, icon
                             border: border,
                             marginLeft: marginLeft
                         }}>
-                {icon && <img src={icon} width='14px' height='12px' alt='button-icon'/>}
+                {icon && <img src={icon} width='14px' height='14px' alt="button-icon"/>}
                 <span>{title}</span>
             </button>
 

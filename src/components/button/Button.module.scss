@@ -9,9 +9,10 @@
     display: flex;
     align-items: center;
     gap: 8px;
+    color: #334253;
   }
 }
 
 .button:hover {
-  color: #C5C6EF;
+  opacity: 0.7;
 }

@@ -1,5 +1,5 @@
 import Select from '@/components/select/Select.tsx';
-import {ChangeEvent, useEffect, useState} from 'react';
+import {ChangeEvent, useState} from 'react';
 import style from './Comments.module.scss'
 import Textarea from '@/components/textarea/Textarea.tsx';
 import Button from '@/components/button/Button.tsx';
@@ -40,6 +40,10 @@ const Comments = () => {
 
     const comments = useAppSelector(state => state.comment);
     const dispatch = useAppDispatch();
+
+    const onChangeHandlerCommentText = (e: ChangeEvent<HTMLTextAreaElement>) => {
+        setCommentText(e.currentTarget.value)
+    }
     const onClickSendCommentHandler = () => {
         dispatch(addComment({user: currentUser, text: commentText}));
         setCommentText('')
@@ -65,7 +69,7 @@ const Comments = () => {
                 : days <= 7 && days >= 1 ? `${days} day(s)` : 'less than minute';
     }
 
-    const CommentList = ({comment}: { comment: CommentType }) => {
+    const commentList = (comment: CommentType ) => {
         const onClickReplyTextHandler = () => {
             setReplyMode(!replyMode)
             setReplyId(comment.id)
@@ -79,8 +83,8 @@ const Comments = () => {
         }
 
         const onChangeReplyText = (e: ChangeEvent<HTMLTextAreaElement>) => {
+            e.stopPropagation()
             setReplyText(e.currentTarget.value);
-            e.preventDefault()
         }
 
         const onClickUpdateCommentHandler = () => {
@@ -92,11 +96,6 @@ const Comments = () => {
             setDeletedCommentId(comment.id)
             setIsModalWindowOpen(true)
         }
-
-        useEffect(() => {
-            isModalWindowOpen && (document.body.style.overflow = 'hidden')
-            !isModalWindowOpen && (document.body.style.overflow = 'unset')
-        }, [isModalWindowOpen])
 
         return (
             <div key={comment.id}>
@@ -141,12 +140,12 @@ const Comments = () => {
                                 onClick={onClickReplyTextHandler}/>
                     </div>}
                     {editMode && editCommentId === comment.id ?
-                        <div>
-                            <Textarea width='100%'
+                        <div className={style.answer__text}>
+                            <Textarea id={'12'}
+                                      width='100%'
                                       height='96px'
                                       value={editableText}
-                                      onChangeHandler={(e) => setEditableText(e.currentTarget.value)}
-                                      placeholderText='Add a comment…'/>
+                                      onChangeHandler={(e) => {setEditableText(e.currentTarget.value)}}/>
                             <div className={style.answer__button_update}>
                                 <Button title='UPDATE'
                                         width='104px'
@@ -171,7 +170,7 @@ const Comments = () => {
                 {comment.answers.map(comment => {
                     return (
                         <div className={style.reply}>
-                            <CommentList comment={comment}/>
+                            {commentList(comment)}
                         </div>
                     )
                 })}
@@ -188,7 +187,7 @@ const Comments = () => {
                     options={users}/>
             <section className={style.comments}>
                 <div className={style.comments__wrapper}>
-                    {comments.map(comment => <CommentList comment={comment}/>)}
+                    {comments.map(comment => commentList(comment))}
                     <div className={style.comments__base}>
                         <img className={style.comments__image}
                              src={currentUser?.src}
@@ -197,9 +196,10 @@ const Comments = () => {
                              alt='user-avatar'/>
                         <div className={style.comments__texarea}>
                             <Textarea width='100%'
-                                      height='96px'
+                                      id={'11'}
                                       value={commentText}
-                                      onChangeHandler={(e) => setCommentText(e.currentTarget.value)}
+                                      height='96px'
+                                      onChangeHandler={onChangeHandlerCommentText}
                                       placeholderText='Add a comment…'/>
                         </div>
                         <div className={style.comments__button}>

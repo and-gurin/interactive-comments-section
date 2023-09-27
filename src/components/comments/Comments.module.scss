@@ -133,7 +133,6 @@
   &__text {
     @include font(1.6rem, 2.4rem, 400, #67727E);
     grid-area: text;
-    max-width: 530px;
   }
 
   &__likes {
