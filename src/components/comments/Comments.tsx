@@ -4,7 +4,13 @@ import style from './Comments.module.scss'
 import Textarea from '@/components/textarea/Textarea.tsx';
 import Button from '@/components/button/Button.tsx';
 import {useAppDispatch, useAppSelector} from '@/hooks/useAppDispatch.ts';
-import {addComment, changeLikes, CommentType, deleteComment, editComment} from '@/features/comments/commentsSlice.ts';
+import {
+    addComment,
+    changeLikes, changeUserLabel,
+    CommentType,
+    deleteComment,
+    editComment
+} from '@/features/comments/commentsSlice.ts';
 import ReplyForm from "@/components/reply-form/ReplyForm.tsx";
 import InputPlusMinus from "@/components/input-plus-minus/InputPlusMinus.tsx";
 import ModalWindow from "@/components/modal-window/ModalWindow.tsx";
@@ -17,7 +23,7 @@ export type UserType = {
 } | undefined
 
 const users = [
-    {id: '1', src: 'juliusomo.png', title: 'juliusomo', label: 'you'},
+    {id: '1', src: 'juliusomo.png', title: 'juliusomo', label: ''},
     {id: '2', src: 'amyrobson.png', title: 'amyrobson', label: ''},
     {id: '3', src: 'maxblagun.png', title: 'maxblagun', label: ''},
     {id: '4', src: 'ramsesmiron.png', title: 'ramsesmiron', label: ''},
@@ -25,6 +31,13 @@ const users = [
 
 const Comments = () => {
 
+    // const [userse, setUsers] = useState<UserType[]>([
+    //     {id: '1', src: 'juliusomo.png', title: 'juliusomo', label: ''},
+    //     {id: '2', src: 'amyrobson.png', title: 'amyrobson', label: ''},
+    //     {id: '3', src: 'maxblagun.png', title: 'maxblagun', label: ''},
+    //     {id: '4', src: 'ramsesmiron.png', title: 'ramsesmiron', label: ''},
+    // ]);
+    console.log(users)
     const [userId, setUserId] = useState<string>('1');
     const [commentText, setCommentText] = useState<string>('');
     const [replyText, setReplyText] = useState('');
@@ -36,11 +49,16 @@ const Comments = () => {
     const [deletedCommentId, setDeletedCommentId] = useState<string>('');
     const [editCommentId, setEditCommentId] = useState<string>('');
     const [replyUserName, setReplyUserName] = useState<string | undefined>('');
-    const currentUser: UserType = users?.find(user => user.id === userId);
+
+    const currentUser: UserType = users?.find(user => user?.id === userId);
 
     const comments = useAppSelector(state => state.comment);
     const dispatch = useAppDispatch();
 
+    const changeUserLabelHandler = (e: ChangeEvent<HTMLSelectElement>) => {
+        setUserId(e.currentTarget.value);
+        dispatch(changeUserLabel({id: e.currentTarget.value}))
+    }
     const onChangeHandlerCommentText = (e: ChangeEvent<HTMLTextAreaElement>) => {
         setCommentText(e.currentTarget.value)
     }
@@ -183,7 +201,7 @@ const Comments = () => {
             {isModalWindowOpen && <ModalWindow setModalWindowMode={setIsModalWindowOpen}
                                                onClickDeleteComment={onClickDeleteCommentHandler}
             />}
-            <Select onChangeHandler={(e) => setUserId(e.currentTarget.value)}
+            <Select onChangeHandler={(e) => changeUserLabelHandler(e)}
                     options={users}/>
             <section className={style.comments}>
                 <div className={style.comments__wrapper}>

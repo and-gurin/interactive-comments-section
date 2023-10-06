@@ -1,5 +1,6 @@
 import style from './Select.module.scss';
 import {ChangeEvent} from "react";
+import {UserType} from "@/components/comments/Comments.tsx";
 
 export type OptionsType = {
     id: string
@@ -12,7 +13,7 @@ const Select = ({disabled, textLabel, options, value, onChangeHandler, placehold
                     {
                         disabled?: boolean
                         textLabel?: string
-                        options?: OptionsType[]
+                        options?: UserType[]
                         error?: string
                         value?: string
                         onChangeHandler?: (e: ChangeEvent<HTMLSelectElement>) => void
@@ -26,10 +27,10 @@ const Select = ({disabled, textLabel, options, value, onChangeHandler, placehold
         ? options.map((o) => (
             <option
                 className={style.option}
-                key={o.id}
-                value={o.id}
+                key={o?.id}
+                value={o?.id}
             >
-                {o.title}
+                {o?.title}
             </option>
         ))
         : []
