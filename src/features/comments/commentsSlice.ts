@@ -33,10 +33,11 @@ const changeUser = (state: CommentType[],
     state.forEach((comment, index) => {
         if (comment.userId === userId) {
             handler(state, index)
-            if (comment.answers.length) {
-                changeComment(comment.answers, userId, handler)
-            }
-        } else {
+        }
+        else if (comment.answers.length) {
+            changeUser(comment.answers, userId, handler)
+        }
+        else {
             comment.label = ''
         }
     })

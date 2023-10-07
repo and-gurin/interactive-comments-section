@@ -14,6 +14,7 @@ import {
 import ReplyForm from "@/components/reply-form/ReplyForm.tsx";
 import InputPlusMinus from "@/components/input-plus-minus/InputPlusMinus.tsx";
 import ModalWindow from "@/components/modal-window/ModalWindow.tsx";
+import {v1} from "uuid";
 
 export type UserType = {
     id: string
@@ -23,22 +24,15 @@ export type UserType = {
 } | undefined
 
 const users = [
-    {id: '1', src: 'juliusomo.png', title: 'juliusomo', label: ''},
-    {id: '2', src: 'amyrobson.png', title: 'amyrobson', label: ''},
-    {id: '3', src: 'maxblagun.png', title: 'maxblagun', label: ''},
-    {id: '4', src: 'ramsesmiron.png', title: 'ramsesmiron', label: ''},
+    {id: v1(), src: 'juliusomo.png', title: 'juliusomo', label: ''},
+    {id: v1(), src: 'amyrobson.png', title: 'amyrobson', label: ''},
+    {id: v1(), src: 'maxblagun.png', title: 'maxblagun', label: ''},
+    {id: v1(), src: 'ramsesmiron.png', title: 'ramsesmiron', label: ''},
 ]
 
 const Comments = () => {
 
-    // const [userse, setUsers] = useState<UserType[]>([
-    //     {id: '1', src: 'juliusomo.png', title: 'juliusomo', label: ''},
-    //     {id: '2', src: 'amyrobson.png', title: 'amyrobson', label: ''},
-    //     {id: '3', src: 'maxblagun.png', title: 'maxblagun', label: ''},
-    //     {id: '4', src: 'ramsesmiron.png', title: 'ramsesmiron', label: ''},
-    // ]);
-    console.log(users)
-    const [userId, setUserId] = useState<string>('1');
+    const [userId, setUserId] = useState<string>(users[0].id);
     const [commentText, setCommentText] = useState<string>('');
     const [replyText, setReplyText] = useState('');
     const [replyMode, setReplyMode] = useState<boolean>(false);
@@ -187,7 +181,7 @@ const Comments = () => {
 
                 {comment.answers.map(comment => {
                     return (
-                        <div className={style.reply}>
+                        <div key={comment.id} className={style.reply}>
                             {commentList(comment)}
                         </div>
                     )
