@@ -179,10 +179,10 @@ const Comments = () => {
                                                                   replyUserName={replyUserName}
                                                                   onClickReplyButtonHandler={onClickReplyButtonHandler}/> : null}
 
-                {comment.answers.map(comment => {
+                {comment.answers.map(answer => {
                     return (
-                        <div key={comment.id} className={style.reply}>
-                            {commentList(comment)}
+                        <div key={answer.id} className={style.reply}>
+                            {commentList(answer)}
                         </div>
                     )
                 })}

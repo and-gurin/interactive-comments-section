@@ -123,6 +123,7 @@
     gap: 24px;
     grid-area: buttons;
     align-self: start;
+    flex-wrap: wrap;
   }
 
   &__button_update {

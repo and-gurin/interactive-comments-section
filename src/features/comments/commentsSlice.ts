@@ -26,20 +26,20 @@ const changeComment = (state: CommentType[],
     })
 }
 
-const changeUser = (state: CommentType[],
+const changeCurrentUser = (state: CommentType[],
                     userId: string,
                     handler: (state: CommentType[], index: number) => void) => {
 
     state.forEach((comment, index) => {
         if (comment.userId === userId) {
             handler(state, index)
-        }
-        else if (comment.answers.length) {
-            changeUser(comment.answers, userId, handler)
-        }
-        else {
+        } else {
             comment.label = ''
         }
+        if (comment.answers.length) {
+            changeCurrentUser(comment.answers, userId, handler)
+        }
+
     })
 }
 
@@ -97,7 +97,7 @@ export const cartSlice = createSlice({
                 const changeUserLabelHandler = (state: CommentType[], index: number) => {
                     state[index].label = 'you'
                 }
-                changeUser(state, action.payload.id, changeUserLabelHandler);
+                changeCurrentUser(state, action.payload.id, changeUserLabelHandler);
             },
         }
     }
