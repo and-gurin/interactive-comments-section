@@ -7,7 +7,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  position: absolute;
+  position: fixed;
 }
 
 .centered {
@@ -26,6 +26,12 @@
   z-index: 116;
   border-radius: 8px;
   padding: 32px;
+
+  @media (max-width: 375px) {
+    width: 343px;
+    height: 224px;
+    padding: 24px 27px;
+  }
 }
 
 .heading {
@@ -35,6 +41,10 @@
   font-size: 24px;
   line-height: 32px;
   text-align: left;
+
+  @media (max-width: 375px) {
+    margin-bottom: 16px;
+  }
 }
 
 .modalContent {
@@ -43,6 +53,10 @@
   color: #67727E;
   text-align: left;
   margin-bottom: 20px;
+
+  @media (max-width: 375px) {
+    margin-bottom: 16px;
+  }
 }
 
 .buttons {

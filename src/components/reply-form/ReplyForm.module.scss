@@ -5,14 +5,30 @@
   display: flex;
   gap: 16px;
   max-width: 730px;
-  height: 144px;
   border-radius: 8px;
   background-color: #FFFFFF;
   padding: 24px;
   margin-bottom: 20px;
 
+  @media (max-width: 375px) {
+    display: grid;
+    grid-template-areas:
+            'textarea textarea textarea'
+            'avatar . button';
+  }
+
+  &__img {
+    grid-area: avatar;
+  }
+
   &__button {
     flex-shrink: 0;
     width: 104px;
+    grid-area: button;
+  }
+
+  &__textarea {
+    width: 100%;
+    grid-area: textarea;
   }
 }

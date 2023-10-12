@@ -8,44 +8,81 @@
     max-width: 730px;
     margin: 0 auto;
     padding: 64px 0;
+
+    @media (max-width: 375px) {
+      padding: 32px 16px;
+    }
   }
 
   &__base {
     display: flex;
     max-width: 730px;
     gap: 16px;
-    height: 144px;
     border-radius: 8px;
     background-color: #FFFFFF;
     padding: 24px;
   }
 
+  @media (max-width: 375px) {
+    &__base {
+      display: grid;
+      grid-template-areas:
+            'textarea textarea textarea'
+            'avatar . button';
+    }
+
+    &__image {
+      grid-area: avatar;
+      width: 32px;
+      height: 32px;
+      align-self: center;
+    }
+  }
+
+  &__texarea {
+    grid-area: textarea;
+    width: 100%;
+  }
+
   &__button {
     flex-shrink: 0;
     width: 104px;
+    grid-area: button;
+    justify-self: right;
   }
 }
 
 .answer {
   min-height: 167px;
-  gap: 24px;
+  column-gap: 24px;
   margin-bottom: 20px;
   border-radius: 8px;
   background-color: #FFFFFF;
   padding: 24px;
-  display: flex;
+  display: grid;
+  grid-template-columns: 40px auto auto;
+  grid-template-rows: repeat(2, auto);
+  grid-template-areas:
+            'likes userInfo buttons'
+            'likes text text';
 
-  &_answer {
-    margin-left: 43px;
-    padding-left: 43px;
+  @media (max-width: 375px) {
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: repeat(3, auto);
+    grid-template-areas:
+            'userInfo userInfo'
+            'text text'
+            'likes buttons';
+    row-gap: 16px;
+
+    &__UserInfo {
+      gap: 8px;
+    }
   }
 
   &_replyMode {
     margin-bottom: 8px;
-  }
-
-  &__header {
-    flex-grow: 2;
   }
 
   &__name {
@@ -63,24 +100,30 @@
   }
 
   &__date {
-  @include font(1.6rem, 2.4rem, 400, #67727E);
-}
+    @include font(1.6rem, 2.4rem, 400, #67727E);
+  }
 
   &__UserInfo {
     display: flex;
     gap: 16px;
     align-items: center;
     margin-bottom: 15px;
+    grid-area: userInfo;
   }
 
   &__button {
     margin-left: auto;
+    grid-area: buttons;
+    align-self: start;
   }
 
   &__button_edit {
     display: flex;
     margin-left: auto;
     gap: 24px;
+    grid-area: buttons;
+    align-self: start;
+    flex-wrap: wrap;
   }
 
   &__button_update {
@@ -90,9 +133,21 @@
 
   &__text {
     @include font(1.6rem, 2.4rem, 400, #67727E);
+    grid-area: text;
   }
 
   &__likes {
-    flex-grow: 0;
+    grid-area: likes;
+    grid-row: span 2;
+  }
+}
+
+.reply {
+  margin-left: 43px;
+  padding-left: 43px;
+
+  @media (max-width: 343px) {
+    margin-left: 16px;
+    padding-left: 16px;
   }
 }

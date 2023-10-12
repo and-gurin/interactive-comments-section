@@ -16,7 +16,7 @@ const Button = ({title, onClick, borderRadius, width, height, bg, fontSize, icon
                             marginLeft?: string
                         }) => {
     return (
-            <button className={icon ? s.button + ' ' + s.button_icon : s.button}
+            <button className={icon ? s.button + ' ' + s.button_icon: s.button}
                     onClick={onClick}
                     style={
                         {
@@ -30,7 +30,7 @@ const Button = ({title, onClick, borderRadius, width, height, bg, fontSize, icon
                             border: border,
                             marginLeft: marginLeft
                         }}>
-                {icon && <img src={icon} width='14px' height='12px' alt='button-icon'/>}
+                {icon && <img src={icon} width='14px' height='14px' alt="button-icon"/>}
                 <span>{title}</span>
             </button>
 

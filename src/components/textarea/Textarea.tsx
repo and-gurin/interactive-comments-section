@@ -1,29 +1,32 @@
 import style from './Textarea.module.scss';
 import {ChangeEvent} from "react";
 
-const Textarea = ({disabled, textLabel, error, value, onChangeHandler, placeholderText, width, id, height}:
+const Textarea = ({disabled, value, onChangeHandler, placeholderText, width, id, height, className}:
                       {
                           disabled?: boolean
-                          textLabel?: string
-                          error?: string
                           value?: string
                           onChangeHandler?: (e: ChangeEvent<HTMLTextAreaElement>) => void
                           placeholderText?: string
                           width?: string
                           id?: string
                           height: string
+                          className?: string
+                          isFocus?: boolean
                       }
 ) => {
 
+    const onChangeTextarea = (e: ChangeEvent<HTMLTextAreaElement>) => {
+        e.stopPropagation();
+        onChangeHandler?.(e)
+    }
+
     return (
         <>
-            {textLabel && <label htmlFor={id} className={style.textLabel}>{textLabel}</label>}
             <textarea value={value}
                       id={id}
-                      onChange={onChangeHandler}
-                      className={error ? `${style.input} ${style.error}` : style.input}
+                      onChange={onChangeTextarea}
+                      className={style.input + ' ' + className}
                       disabled={disabled}
-                      autoFocus
                       placeholder={placeholderText}
                       style={{width: width, height: height}}
             />

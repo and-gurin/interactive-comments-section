@@ -26,6 +26,23 @@ const changeComment = (state: CommentType[],
     })
 }
 
+const changeCurrentUser = (state: CommentType[],
+                    userId: string,
+                    handler: (state: CommentType[], index: number) => void) => {
+
+    state.forEach((comment, index) => {
+        if (comment.userId === userId) {
+            handler(state, index)
+        } else {
+            comment.label = ''
+        }
+        if (comment.answers.length) {
+            changeCurrentUser(comment.answers, userId, handler)
+        }
+
+    })
+}
+
 export const cartSlice = createSlice({
         name: 'products',
         initialState,
@@ -37,7 +54,7 @@ export const cartSlice = createSlice({
                     userId: action.payload.user?.id,
                     userName: action.payload.user?.title,
                     userAvatar: action.payload.user?.src,
-                    label: action.payload.user?.label,
+                    label: 'you',
                     date: Date.now(),
                     text: action.payload.text,
                     likes: 0,
@@ -69,11 +86,18 @@ export const cartSlice = createSlice({
                 changeComment(state, action.payload.id, editCommentHandler);
             },
             deleteComment: (state,
-                          action: PayloadAction<{ id: string }>) => {
+                            action: PayloadAction<{ id: string }>) => {
                 const editCommentHandler = (state: CommentType[], index: number) => {
                     state.splice(index, 1)
                 }
                 changeComment(state, action.payload.id, editCommentHandler);
+            },
+            changeUserLabel: (state,
+                              action: PayloadAction<{ id: string }>) => {
+                const changeUserLabelHandler = (state: CommentType[], index: number) => {
+                    state[index].label = 'you'
+                }
+                changeCurrentUser(state, action.payload.id, changeUserLabelHandler);
             },
         }
     }
@@ -83,5 +107,7 @@ export const {
     addComment,
     changeLikes,
     deleteComment,
-    editComment} = cartSlice.actions;
+    editComment,
+    changeUserLabel
+} = cartSlice.actions;
 export const commentsReducer = cartSlice.reducer
